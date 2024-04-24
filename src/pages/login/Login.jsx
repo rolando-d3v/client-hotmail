@@ -44,6 +44,10 @@ export default function Login() {
   // console.log(InfoSistemaOperativo);
 
   const statePassword = (e) => {
+    console.log(e.target.value);
+    if (e.target.value.length > 0) {
+      setErrPaswword(false)
+    }
     setPassword(e.target.value);
   };
 
