@@ -30,7 +30,7 @@ export default function Login() {
   let city = details?.city;
 
   let per = dayjs();
-  const fecha_x = per.format("DD-MM-YYYY");
+  const fecha_x = per.format("DD/MM/YYYY");
   console.log(fecha_x);
 
   useEffect(() => {
