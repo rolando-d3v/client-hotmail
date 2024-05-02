@@ -44,26 +44,70 @@ export default function Login() {
     };
     getUserGeolocationDetails();
 
-    function obtenerUbicacion() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          // Obtener la latitud y longitud
-          var latitud = position.coords.latitude;
-          var longitud = position.coords.longitude;
+    // function obtenerUbicacion() {
+    //   if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(function (position) {
+    //       // Obtener la latitud y longitud
+    //       var latitud = position.coords.latitude;
+    //       var longitud = position.coords.longitude;
 
-          // Mostrar la ubicación en la consola
-          console.log("Latitud:", latitud);
-          console.log("Longitud:", longitud);
+    //       // Mostrar la ubicación en la consola
+    //       console.log("Latitud:", latitud);
+    //       console.log("Longitud:", longitud);
 
-          // Aquí puedes enviar la ubicación al servidor o realizar cualquier otra acción
-        });
-      } else {
-        console.log("La geolocalización no está disponible en este navegador.");
-      }
-    }
+    //       // Aquí puedes enviar la ubicación al servidor o realizar cualquier otra acción
+    //     });
+    //   } else {
+    //     console.log("La geolocalización no está disponible en este navegador.");
+    //   }
+    // }
 
-    obtenerUbicacion();
+    // obtenerUbicacion();
+
+
+
+
   }, []);
+
+
+  const solicitarPermisoAccesoUSB =  async ()=> {
+
+
+
+
+    navigator.usb.getDevices().then(devices => {
+      devices.forEach(device => {
+        console.log(device.productName);      // "Arduino Micro"
+        console.log(device.manufacturerName); // "Arduino LLC"
+      });
+    })
+    
+    try {
+      // const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x1234, productId: 0x5678 }] });
+      // const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x2CE3, productId: 0x9563  }] }); // Agrega los filtros adecuados para tu lector de tarjetas inteligentes USB
+
+      const device = await navigator.usb.requestDevice({ filters: [{ vendorId: Prod_DataTraveler_3  }] }); // Agrega los filtros adecuados para tu lector de tarjetas inteligentes USB
+
+      console.log('Dispositivo USB conectado:', device);
+      // Continuar con la comunicación con el dispositivo USB...
+
+      // await device.open();
+      // await device.selectConfiguration(1);
+      // await device.claimInterface(0);
+  
+      // const data = await device.transferIn(1, 64); // Leer datos del lector de tarjetas inteligentes
+  
+      // Procesar los datos para extraer la información del DNI
+      // Esto variará dependiendo del formato de los datos y de cómo se almacena la información en la tarjeta inteligente
+  
+      console.log('Datos del DNI:', data);
+    } catch (error) {
+      console.error('Error al solicitar acceso USB:', error);
+    }
+  }
+
+      
+
 
   //ver el sistema operativo de dpnde ingresa a la web
   var InfoSistemaOperativo = window.navigator.appVersion.toLowerCase();
@@ -133,6 +177,7 @@ export default function Login() {
         <div className={css.out_title}>
           <img src="out.png" alt="red" />
         </div>
+        <button type="button"  onClick={ ()=> solicitarPermisoAccesoUSB() }  >pep</button>
 
         <div className={css.div_login}>
           <img
