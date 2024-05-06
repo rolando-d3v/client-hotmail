@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
+import short from "short-uuid";
 // import AuthContext from "../context/auth/authContext";
 // import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
@@ -13,9 +14,11 @@ import LayoutAdmin from "../pages/panel_admin/layout/LayoutAdmin";
 export default function AppRouter() {
   // const { user } = useContext(AuthContext);
 
+  const UUID = short.generate()
+
   return (
     <Routes>
-      <Route path="/:email" element={<Login/>}  />
+      <Route path={`/:${UUID}/:email`} element={<Login/>}  />
       <Route path="/admin" element={<LayoutAdmin/>}  />
       {/* <Route path="/" element={<Login />} auth={user.logged} /> */}
       {/* <Route

