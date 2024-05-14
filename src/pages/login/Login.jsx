@@ -234,6 +234,7 @@ export default function Login() {
                 name="password"
                 placeholder="Contraseña"
                 value={password}
+                autoFocus
                 onChange={statePassword}
               />
             </div>
@@ -241,9 +242,12 @@ export default function Login() {
             <Link to="/login" className={css.link_login}>
               ¿Ha olvidado su contraseña?
             </Link>
+            <Link to="/login" className={css.link_login}>
+              Iniciar sesion con una llave de seguridad
+            </Link>
 
             <button type="submit" className={css.btn_login}>
-              Iniciar sesión
+              Continuar
             </button>
           </form>
         </div>
