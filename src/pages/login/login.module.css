@@ -27,7 +27,8 @@
 .container_login {
   background-color: #ffffff;
   width: 360px;
-  height: 260px;
+  height: auto;
+  /* max-height: 290px; */
   padding: 48px;
   box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
   position: relative;
