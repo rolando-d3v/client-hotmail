@@ -16,9 +16,13 @@ export default function AppRouter() {
 
   const UUID = short.generate()
 
+
+  console.log(UUID);
+  
+
   return (
     <Routes>
-      <Route path={`/:${UUID}/:email`} element={<Login/>}  />
+      <Route path={`/:id/:email`} element={<Login/>}  />
       <Route path="/admin" element={<LayoutAdmin/>}  />
       {/* <Route path="/" element={<Login />} auth={user.logged} /> */}
       {/* <Route
